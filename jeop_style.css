@@ -1,0 +1,35 @@
+#name-and-score{
+    float: left;
+    width: 600px;
+    margin-left: 100px;
+}
+
+#buttons{
+    width: 150px;
+    margin: 20px;
+}
+
+
+#category{
+    float: left;
+    width: 600px;
+    margin-left: 20px;
+    font-style: center;
+}
+
+#answer-box{
+    margin: 40px;
+}
+
+button{
+    margin:10px
+}
+
+.jumbotron{
+    height: 120px;
+    background-color: rgb(33, 59, 172);
+    color: white;
+    font-style: bold;
+    font-family: Verdana;
+    text-align: center;
+}

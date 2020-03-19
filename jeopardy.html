@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <meta charset = "UTF-8">
+<head>
+
+    <!--Vue.js-->
+    <script src="https:/cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    
+    <meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel = "stylesheet" href = "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity = "sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin = "anonymous">
+    
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" type="text/css" href="jeop_style.css">
+    <!-- Script  -->
+    <script async defer src="jeop_game.js"></script>
+
+</head>
+<body>
+    <div class = "jumbotron">
+        <h1>Jeopardy Practice Game</h1>
+    </div>
+    <div id = "game">
+        <transition name="fade">
+            <div class = "alert alert-success" v-if="seeMessage">{{message}}</div>
+        </transition>
+        <div>
+            <div id = "name-and-score">
+                <div id = "app">
+                    <label for = "name">Please enter your name: </label>
+                    <input v-model = "name" id = "name">
+                    
+                    <p id = "contestant" v-if = "name">Contestant name : {{ name }}</p>
+                    <p id = "score" v-if = "score">Score : {{ score }}</p>
+                    
+                    <div id = "new-category">
+                        <br>
+                        <button class = "btn btn-warning" v-on:click = "btnBegin">New Category</button>
+                        <br>
+                     </div>
+                </div>
+                <div>
+                    <div id = "buttons">
+                        
+                        <p>
+                            <button class = "btn btn-primary" name = "btn200" v-on:click = "getAnswer('200')">$200</button>
+                            <br>
+                            <button class = "btn btn-primary" name = "btn400" v-on:click = "getAnswer('400')">$400</button>
+                            <br>
+                            <button class = "btn btn-primary" name = "btn600" v-on:click = "getAnswer('600')">$600</button>
+                            <br>
+                            <button class = "btn btn-primary" name = "btn800" v-on:click = "getAnswer('800')">$800</button>
+                            <br>
+                            <button class = "btn btn-primary" name = "btn1000" v-on:click = "getAnswer('1000')">$1000</button>
+                        
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    
+        
+        <div>
+            <div id = "category" v-if = "started">
+                <h2>Category:<br>
+                    {{ category }}
+                </h2>
+                <div v-if = "showAnswer">
+                    <p id = "answer-box">
+                        Answer: {{answer}}
+                    </p>
+                    <form id = "user-res" v-if = "showAnswer">
+                        <label for = "question">Who/what is:  </label><input id = "question" v-model.trim="userQ">
+                        <br><button id = "send-response" v-on:click.prevent = "checkAnswer">Submit Response</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

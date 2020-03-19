@@ -80,12 +80,13 @@ let game = new Vue({
             console.log(this.answer)
         },
         checkAnswer(){
-            question = this.userQ
+            question = this.userQ.toLowerCase()
             correctQ = this.clueSet[this.clue].answer
+            correctQ = correctQ.toLowerCase()
             console.log(question)
             console.log(correctQ)
-            console.log(question.localeCompare(correctQ, 'en', {sensitivity: 'base'}))
-            if((question.localeCompare(correctQ, 'en', {sensitivity: 'base'}))==0){ //I use this instead of '===' because otherwise it's always true (for some reason)
+            console.log(correctQ.includes(question))
+            if(correctQ.includes(question)){
                 this.message = 'Correct! You add ' + this.value + ' to your total. Select again.'
             } else {
                 this.message = 'Sorry. The correct answer is ' + this.clueSet[this.clue].answer + '.'

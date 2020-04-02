@@ -40,11 +40,16 @@ let game = new Vue({
             .then( clueData => {
                 console.log(clueData)
                 this.category = clueData.title.toUpperCase()
-                console.log(clueData.clues[0])
                 for(i = 0; i < 5; i++){
+                    console.log(clueData.clues[i])
                     this.clueSet.push(clueData.clues[i])
                 }
                 console.log(this.clueSet)
+                for(i = 0; i < 5; i++){
+                    if(this.clueSet[i] === ""){
+                        this.getCategoryID()
+                    }
+                }
             })
         },
         getAnswer(message){
@@ -81,12 +86,15 @@ let game = new Vue({
         },
         checkAnswer(){
             question = this.userQ.toLowerCase()
+            question = question.trim()
+            question = question.replace(/[^a-zA-Z0-9]/g, '') //found this at https://stackoverflow.com/questions/6555182/remove-all-special-characters-except-space-from-a-string-using-javascript
             correctQ = this.clueSet[this.clue].answer
             correctQ = correctQ.toLowerCase()
+            correctQ = correctQ.replace(/[^a-zA-Z0-9]/g, '')
             console.log(question)
             console.log(correctQ)
             console.log(correctQ.includes(question))
-            if(correctQ.includes(question)){
+            if(question != '' && correctQ.includes(question)){
                 this.message = 'Correct! You add ' + this.value + ' to your total. Select again.'
             } else {
                 this.message = 'Sorry. The correct answer is ' + this.clueSet[this.clue].answer + '.'
@@ -95,6 +103,9 @@ let game = new Vue({
             this.userQ = ''
             this.showMessage(this.message)
             this.score += this.value
+            if(this.value < 0){
+                this.value *= -1
+            }
         },
         showMessage(){
             this.seeMessage = true

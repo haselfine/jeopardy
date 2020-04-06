@@ -20,34 +20,35 @@ let game = new Vue({
     methods: {
         btnBegin(){
             this.clueSet = []
-            this.started = true
-            this.showAnswer = false
+            this.started = true //allow category to display
+            this.showAnswer = false //don't show answer (question) yet
             this.getCategoryID()
         },
         getCategoryID(){
-            fetch(categoryUrl)
+            fetch(categoryUrl) //call api for category id
             .then( res => res.json() )
             .then( catData => {
                 let catId = catData[0].category_id
                 console.log(catId)
-                this.getClues(catId)
+                this.getClues(catId) //send category id to new API call
             })
         },
-        getClues(catId){
+        getClues(catId){ //new api call to get answers (questions) (you know how Jeopardy switches the words around...)
             let newClueUrl = cluesUrl + catId
             fetch(newClueUrl)
             .then( res => res.json() )
             .then( clueData => {
                 console.log(clueData)
                 this.category = clueData.title.toUpperCase()
-                for(i = 0; i < 5; i++){
+                for(i = 0; i < 5; i++){ //get first 5 answers (questions) from api -- it's easier to do this than to select a random set
                     console.log(clueData.clues[i])
-                    this.clueSet.push(clueData.clues[i])
+                    this.clueSet.push(clueData.clues[i]) //push each answer to array
                 }
                 console.log(this.clueSet)
                 for(i = 0; i < 5; i++){
-                    if(this.clueSet[i] === ""){
+                    if(this.clueSet[i] === ""){ //api sometimes sends empty answers to my array. This tries to prevent that (hard to test)
                         this.getCategoryID()
+                        break
                     }
                 }
             })
@@ -55,7 +56,7 @@ let game = new Vue({
         getAnswer(message){
             this.showAnswer = true
             console.log(message)
-            switch(message){
+            switch(message){ //set values depending on dollar amount selected
                 case '200':
                     this.clue = 0
                     this.value = 200
@@ -84,26 +85,31 @@ let game = new Vue({
             }
             console.log(this.answer)
         },
-        checkAnswer(){
-            question = this.userQ.toLowerCase()
-            question = question.trim()
-            question = question.replace(/[^a-zA-Z0-9]/g, '') //found this at https://stackoverflow.com/questions/6555182/remove-all-special-characters-except-space-from-a-string-using-javascript
-            correctQ = this.clueSet[this.clue].answer
+        checkResponse(){ //tests user response against correct response
+            correctQ = this.clueSet[this.clue].answer //get correct response
+            
+            question = this.userQ.toLowerCase() //set both to lowercase
             correctQ = correctQ.toLowerCase()
-            correctQ = correctQ.replace(/[^a-zA-Z0-9]/g, '')
+
+            question = question.trim() //remove extra spaces
+            question = question.replace(/[^a-zA-Z0-9]/g, '') //found this at https://stackoverflow.com/questions/6555182/remove-all-special-characters-except-space-from-a-string-using-javascript
+            
+            
+            correctQ = correctQ.replace(/[^a-zA-Z0-9]/g, '') //remove special characters from correct response
+            
             console.log(question)
             console.log(correctQ)
             console.log(correctQ.includes(question))
-            if(question != '' && correctQ.includes(question)){
-                this.message = 'Correct! You add ' + this.value + ' to your total. Select again.'
-            } else {
+            if(question != '' && correctQ.includes(question)){ //i used includes() since some people will respond with just a last name or part of the correct response
+                this.message = 'Correct! You add ' + this.value + ' to your total. Select again.' //display congratulations
+            } else { //display correct response, change value to negative
                 this.message = 'Sorry. The correct answer is ' + this.clueSet[this.clue].answer + '.'
                 this.value *= -1
             }
             this.userQ = ''
             this.showMessage(this.message)
-            this.score += this.value
-            if(this.value < 0){
+            this.score += this.value //update score
+            if(this.value < 0){ //if negative, return to positive
                 this.value *= -1
             }
         },
@@ -111,7 +117,7 @@ let game = new Vue({
             this.seeMessage = true
             setTimeout( ()=>{
                 this.seeMessage = false
-            }, 7000)
+            }, 7000) //display message for 7 seconds
         }
 
     }

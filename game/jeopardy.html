@@ -18,7 +18,7 @@
 </head>
 <body>
     <div class = "jumbotron">
-        <h1>Jeopardy Practice Game</h1>
+        <h1>Jeopardy Practice Game</h1> <!--display app title-->
     </div>
     <div id = "game">
         <transition name="fade">
@@ -27,15 +27,15 @@
         <div>
             <div id = "name-and-score">
                 <div id = "app">
-                    <label for = "name">Please enter your name: </label>
+                    <label for = "name">Please enter your name: </label> <!--displays name. That's it for now-->
                     <input v-model = "name" id = "name">
                     
                     <p id = "contestant" v-if = "name">Contestant name : {{ name }}</p>
-                    <p id = "score" v-if = "score">Score : {{ score }}</p>
+                    <p id = "score" v-if = "score">Score : {{ score }}</p> <!--score updates as user gets answers right or wrong-->
                     
                     <div id = "new-category">
                         <br>
-                        <button class = "btn btn-warning" v-on:click = "btnBegin">Begin New Category</button>
+                        <button class = "btn btn-warning" v-on:click = "btnBegin">Begin New Category</button> <!--starts game, changes category-->
                         <br>
                      </div>
                 </div>
@@ -63,16 +63,16 @@
         
         <div>
             <div id = "category" v-if = "started">
-                <h2>Category:<br>
+                <h2>Category:<br> <!--displays category only if game has begun-->
                     {{ category }}
                 </h2>
-                <div v-if = "showAnswer">
+                <div v-if = "showAnswer"> <!--shows answer (question) if user clicks a dollar amount-->
                     <p id = "answer-box">
                         Answer: {{answer}}
                     </p>
-                    <form id = "user-res" v-if = "showAnswer">
+                    <form id = "user-res" v-if = "showAnswer"> <!--input for user response-->
                         <label for = "question">Who/what is:  </label><input id = "question" v-model.trim="userQ">
-                        <br><button id = "send-response" v-on:click.prevent = "checkAnswer">Submit Response</button>
+                        <br><button id = "send-response" v-on:click.prevent = "checkResponse">Submit Response</button>
 
                     </form>
                 </div>
